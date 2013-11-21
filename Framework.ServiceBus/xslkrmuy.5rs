@@ -1,0 +1,40 @@
+﻿using System.Diagnostics;
+using NServiceBus;
+
+namespace Framework.ServiceBus
+{
+    public class ServiceBusMessageHelper
+    {
+        private readonly IBus _Bus;
+
+        public ServiceBusMessageHelper(IBus bus)
+        {
+            _Bus = bus;
+        }
+
+        public void Send(string destination, object commandMessage)
+        {
+            _Bus.Send(destination, commandMessage);
+
+        }
+
+        public void Send(object commandMessage)
+        {
+            if (_Bus != null)
+            {
+                Debug.WriteLine("Send command of type {0} to Bus", commandMessage.GetType().Name);
+                _Bus.Send(commandMessage);
+            }
+        }
+
+        public void Publish(object eventMessage)
+        {
+            if (_Bus != null)
+            {
+                Debug.WriteLine("Publish of event type {0} to Bus", eventMessage.GetType().Name);
+                _Bus.Publish(eventMessage);
+            }
+        }
+
+    }
+}
